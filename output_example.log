@@ -1,0 +1,75 @@
+04-May-22 23:09:55 -- Fetching release vdjdb-2022-03-30.zip from VDJdb.
+
+04-May-22 23:10:00 -- VDJdb cached to local as .vdjdb_tsv.gz
+
+04-May-22 23:10:00 -- Filtering VDJdb results for: 
+	>>> gene: TRB
+	>>> cdr3: CASSLGSQNTLYF
+	>>> v.segm: TCRBV12-01*01
+	>>> j.segm: TCRBJ02-04*01
+
+04-May-22 23:10:00 -- Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+
+04-May-22 23:10:00 -- NumExpr defaulting to 8 threads.
+
+04-May-22 23:10:01 -- 1 results found for query_a:
+
+  gene           cdr3      species antigen.epitope antigen.gene  \
+4  TRB  CASSLGSQNTLYF  MusMusculus       HGIRNASFI          M45   
+
+  antigen.species                     complex.id         v.segm  \
+4            MCMV  24506,24470,24451,24458,24513  TCRBV12-01*01   
+
+          j.segm  v.end  j.start  mhc.a mhc.b mhc.class   reference.id  \
+4  TCRBJ02-04*01      5        6  H-2Db   B2M      MHCI  PMID:28636592   
+
+   vdjdb.score  
+4            1  
+
+04-May-22 23:10:01 -- Filtering VDJdb results for: 
+	>>> mhc.a: Mamu-A*01
+	>>> mhc.b: B2M
+
+04-May-22 23:10:01 -- 1364 results found for query_b:
+
+      gene              cdr3        species antigen.epitope antigen.gene  \
+809    TRA      CVLRAGGGYVLT  MacacaMulatta        TTPESANL          Tat   
+1493   TRA     CVLRDSGGSANRL  MacacaMulatta        TTPESANL          Tat   
+3190   TRA      CAVRETGRRALT  MacacaMulatta        TTPESANL          Tat   
+3211   TRA      CAARDSGNRALV  MacacaMulatta        TTPESANL          Tat   
+3966   TRA    CVLRVASGGGYVLT  MacacaMulatta        TTPESANL          Tat   
+...    ...               ...            ...             ...          ...   
+72199  TRB  CASSQRQGGSNQPQYF  MacacaMulatta       CTPYDINQM          Gag   
+72320  TRB   CASSLSGNSNQPQYF  MacacaMulatta       CTPYDINQM          Gag   
+72376  TRB   CASSLYRGGNQPQYF  MacacaMulatta        TTPESANL          Tat   
+72505  TRB         CAGDQPQYF  MacacaMulatta        TTPESANL          Tat   
+72634  TRB    CASRLTLGGGEQYF  MacacaMulatta        TTPESANL          Tat   
+
+      antigen.species complex.id         v.segm         j.segm  v.end  \
+809               SIV          0            NaN            NaN     -1   
+1493              SIV          0            NaN            NaN     -1   
+3190              SIV          0            NaN            NaN     -1   
+3211              SIV          0            NaN            NaN     -1   
+3966              SIV          0            NaN            NaN     -1   
+...               ...        ...            ...            ...    ...   
+72199             SIV          0     TCRBV09*01  TCRBJ01-05*01      4   
+72320             SIV          0     TCRBV14*01  TCRBJ01-05*01      4   
+72376             SIV          0     TCRBV14*01  TCRBJ01-05*01      4   
+72505             SIV          0  TCRBV06-01*01  TCRBJ01-05*01      2   
+72634             SIV          0  TCRBV12-01*01  TCRBJ02-07*01      5   
+
+       j.start      mhc.a mhc.b mhc.class   reference.id  vdjdb.score  
+809         -1  Mamu-A*01   B2M      MHCI  PMID:15589168            1  
+1493        -1  Mamu-A*01   B2M      MHCI  PMID:15589168            0  
+3190        -1  Mamu-A*01   B2M      MHCI  PMID:15589168            0  
+3211        -1  Mamu-A*01   B2M      MHCI  PMID:15589168            0  
+3966        -1  Mamu-A*01   B2M      MHCI  PMID:15589168            0  
+...        ...        ...   ...       ...            ...          ...  
+72199        9  Mamu-A*01   B2M      MHCI  PMID:15589168            1  
+72320        8  Mamu-A*01   B2M      MHCI  PMID:19349463            1  
+72376        9  Mamu-A*01   B2M      MHCI  PMID:15589168            0  
+72505        4  Mamu-A*01   B2M      MHCI  PMID:15589168            1  
+72634       10  Mamu-A*01   B2M      MHCI  PMID:15589168            0  
+
+[1364 rows x 16 columns]
+

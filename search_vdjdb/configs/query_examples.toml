@@ -1,0 +1,9 @@
+[query_a]
+"gene" = "TRB"
+"cdr3" = "CASSLGSQNTLYF"
+"v.segm" = "TCRBV12-01*01"
+"j.segm" = "TCRBJ02-04*01"
+
+[query_b]
+"mhc.a" = "Mamu-A*01"
+"mhc.b" = "B2M"
