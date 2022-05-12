@@ -1,6 +1,5 @@
 # search-vdjdb
-=============
----
+
 
 ### Background 
 
