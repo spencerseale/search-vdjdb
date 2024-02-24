@@ -5,19 +5,90 @@ Runs example code to demo usage.
 
 from typing import Mapping, Optional
 import argparse
-import logging
+from logging import Logger
 from importlib_resources import files
 import os
 
+from click import Command, Option
 import toml
+from attrs import define, field
 import pandas as pd
 
-import search_vdjdb.query_db as query_db
+from search_vdjdb._query import PublicTcrDb
+from search_vdjdb._config import ValidatedInput
+
+@define
+class SearchVdjdbRunner:
+
+    params: ValidatedInput
+    """Validated input parameters."""
+    logger: Logger
+    """Logger instance."""
+    parse: bool = True
+    """Parse the command line arguments."""
+    _command: Command = field(init=False)
+    """Click-formed command to run."""
+
+    def __attrs_post_init__(self) -> None:
+        if self.parse:
+            self._parse()
+
+    def _parse(self) -> None:
+        """Parse the command line arguments to form the command.
+        
+        A dataclass holds all the params to encode individual Option instances.
+        
+        """
+
+        click_params = [Option(**opt) for opt in self.params]
+
+        self._command = Command(
+            name="search-vdjdb", params=click_params, callback=self.run
+        )
+
+    def __call__(self) -> None:
+        """Call the command."""
+
+        if self._command:
+            return self._command()
+
+        else:
+            raise ValueError("Runer not initialized.")
+
+
+    def run(
+        self,
+        log_level: str,
+        query: str,
+        output: bool,
+    ) -> None:
+        """Run the tcrgb-vn-agg workflow."""
+
+        self.logger.setLevel(log_level.upper())
+        self.logger.debug("Logger initialized at level: %s", log_level.upper())
+
+        self.logger.info("Initiating the search-vdjdb entrypoint.")
+        
+        self.logger.info(
+            "Parsed arguments: \n\t-- %s"
+            % "\n\t-- ".join(f"{k}: {v}" for k, v in locals().items() if k != "self")
+        )
+        
+        print(query)
+        print()
+        
+        PublicTcrDb.file_query(query=query, output=output)        
+
+        self.logger.info("Searching complete.")
+
+    
+    
+
 
 def main(
     query: Mapping[str, str],
     query_id: str, 
-    ptb: Optional[query_db.PublicTcrDb] = None,
+    ptb: Optional[PublicTcrDb] = None,
     output: bool = False
 ) -> None:
     """ Runner to demonstrate utility of query_db.
@@ -31,9 +102,9 @@ def main(
         output: whether to save query results to $PWD.
     """
 
-    logging.info("Filtering VDJdb results for: %s" % "".join([f"\n\t>>> {k}: {v}" for k, v in query.items()]))
+    
 
-    ptb = ptb or query_db.PublicTcrDb()
+    ptb = ptb or PublicTcrDb()
 
     out = ptb.find(vdjdb_search = query, construct_only = False)
 
@@ -76,12 +147,12 @@ if __name__ == "__main__":
         description = "Form full length TCR constructs from public databases."
     )
 
-    parser.add_argument(
-        "-c",
-        "--config",
-        default = "search_vdjdb.configs",
-        help = "Config dir (module path) containing config params."
-    )
+    # parser.add_argument(
+    #     "-c",
+    #     "--config",
+    #     default = "search_vdjdb.configs",
+    #     help = "Config dir (module path) containing config params."
+    # )
 
     parser.add_argument(
         "-e",
@@ -104,7 +175,7 @@ if __name__ == "__main__":
     if args.examples:
 
         # form once to reuse same VDJdb for repeat queries
-        ptb = query_db.PublicTcrDb()
+        ptb = PublicTcrDb()
 
         ptb.get_vdjdb()
 

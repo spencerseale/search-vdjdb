@@ -25,7 +25,7 @@ This package relies on poetry for seamless dependency management.
 
 ### Basic Usage
 
-* Run some example cases through the tool to demonstrate it's usage: `poetry run python3 search_vdjdb/main.py --examples`. 
+* Run some example cases through the tool to demonstrate it's usage: `poetry run python3 search_vdjdb/runner.py --examples`. 
 
 * The example queries are contained in `search_vdjdb.configs.query_examples.toml`, you can edit this file to include additional values to filter for as key, value pairs. 
 

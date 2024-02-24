@@ -1,0 +1,23 @@
+[log_level]
+    param_decls = ["--log-level", "-l"]
+    required = false
+    default = "info"
+    show_default = true
+    metavar = "Log Level"
+    help = "Set the logger level; options include: 'debug', 'info', 'warning', 'error', 'critical'."
+
+[query]
+    param_decls = ["--query", "-q"]
+    required = true
+    help = "The query to execute."
+    show_default = true
+    metavar = "Query"
+
+[output]
+    param_decls = ["--output", "-o"]
+    is_flag = true
+    default = false
+    show_default = true
+    metavar = "Output"
+    help = "Output the results to a file."
+

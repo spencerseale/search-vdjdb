@@ -1,4 +1,4 @@
-""" Obtain up-to-date public TCR data from VDJdb containing TCR specificity data.
+"""Obtain up-to-date public TCR data from VDJdb containing TCR specificity data.
 
 VDJdb - https://vdjdb.cdr3.net/
 """
@@ -9,10 +9,9 @@ from urllib.request import urlopen
 from typing import Sequence, List, Mapping, Optional
 from io import BytesIO
 import os
+import toml
 
 import pandas as pd
-import numpy as np
-import bs4
 from zipfile import ZipFile
 
 def _extract_dfs(
@@ -74,7 +73,6 @@ class PublicTcrDb():
         self.vdjdb_v = vdjdb_v
         self.vdjdb_j = vdjdb_j
         self.vdjdb_complex = vdjdb_complex
-
         self.vdjdb = None
 
     def _fix_vj_format(self) -> None:
@@ -92,63 +90,45 @@ class PublicTcrDb():
 
         # iteratively look for known patterns to change and fix for v and j
         for p, r in pat_rep.items():
-
             self.vdjdb[[self.vdjdb_v, self.vdjdb_j]] = self.vdjdb[[self.vdjdb_v, self.vdjdb_j]] \
                 .replace(
-                    to_replace = p,
-                    value = r,
-                    regex = True
+                    to_replace=p,
+                    value=r,
+                    regex=True,
                 )
 
     def get_vdjdb(
         self,
-        site: str = "https://github.com",
-        releases: str = "antigenomics/vdjdb-db/releases",
+        api: str = "https://api.github.com",
+        latest_release: str = "repos/antigenomics/vdjdb-db/releases/latest",
         txt_file: str = "vdjdb.slim.txt",
         cache: bool = True
     ) -> None:
-        """ Obtain a copy of VDJdb from the latest available release.
+        """Obtain a copy of VDJdb from the latest available release.
 
         Args:
-            site: url domain to fetch VDJdb data.
-            releases: path to releases.
-            txt_file: db file.
+            api: github api.
+            latest_release: endpoint to latest release.
+            txt_file: db file to extract from compression.
             cache: whether to cache VDJdb locally for faster retrieval later.
         """
 
-        releases_resp = requests.get(f"{site}/{releases}")
-
-        releases_all = bs4.BeautifulSoup(releases_resp.content, "html.parser")
-
-        # grab all href attrs from releases page
-        href_links = []
-
-        for link in releases_all.find_all("a"):
-
-            href_links.append(link.get("href"))
-
-        # select those with 'download' as these are the .zip files
-        dl_links = np.array([l for l in href_links if "download" in l])
-
-        # date listed as yyyy-mm-dd, thus last entry is most recent db
-        most_recent = np.sort(dl_links)[-1:][0]
-
-        # scraped links begin with '/' which will thwart os.path.join to think its an abs path
-        most_recent = most_recent[1:] if most_recent.startswith("/") else most_recent
-
-        logging.info("Fetching release %s from VDJdb." % most_recent.split("/")[5])
+        resp = requests.get(os.path.join(api, latest_release))
+        resp.raise_for_status()
+        
+        zip_uri = resp.json()["assets"][0]["browser_download_url"]
+        
+        print(zip_uri)
 
         try:
-
             self.vdjdb = _extract_dfs(
-                zip_url = os.path.join(site, most_recent),
+                zip_url = zip_uri,
                 files = [txt_file]
             )[0]
 
             self._fix_vj_format()
 
             if cache:  # archive a local to reduce scraping bandwidth 
-
                 # can be quite large so compress it
                 self.vdjdb.to_csv(
                     ".vdjdb_tsv.gz",
@@ -160,7 +140,6 @@ class PublicTcrDb():
                 logging.info("VDJdb cached to local as .vdjdb_tsv.gz")
 
         except IndexError:
-
             logging.error("Could not locate %s in VDJdb release" % txt_file)
 
     def find(
@@ -180,19 +159,15 @@ class PublicTcrDb():
         """
 
         if vdjdb_search:
-
             # get vdjdb if not previously done
             if self.vdjdb is None:
-
                 try:
-
                     self.vdjdb = pd.read_csv(
                         ".vdjdb_tsv.gz",
                         sep = "\t"
                     )
 
                 except FileNotFoundError:
-
                     self.get_vdjdb()
 
             # dynamically string together filtering operations
@@ -203,7 +178,6 @@ class PublicTcrDb():
             v_result = self.vdjdb.query(" & ".join(v_row_filt), engine = "python")
 
             if construct_only:
-
                 # select only cols relating to construct,
                 # these cols are specified in attributes
                 v_result = v_result.loc[
@@ -215,18 +189,46 @@ class PublicTcrDb():
             return v_result.sort_values([self.vdjdb_complex, self.vdjdb_gene])
 
         else:
-
             logging.warning("No query params specified, returning entire VDJdb.")
 
             return self.vdjdb
+        
+    @classmethod
+    def file_query(cls, query: str, output: bool = False) -> None:
+        
+        cdir, cpath = query.rsplit("/", 1)
+        print(cdir)
+        print(cpath)
+        # queries = toml.loads(files(cdir.replace("/", ".")).joinpath(cpath).read_text())
+        # queries = toml.
+        
+        # load toml file from str path 
+        queries = toml.load(query)
+        print(queries)
+        
+        
+        vdjdb_constr = cls()
+        vdjdb = vdjdb_constr.get_vdjdb()
+        
+        print()
+        print(vdjdb_constr.vdjdb)
+        
+        # for id in queries:
+        
+            # logging.info("Filtering VDJdb results for: %s" % "".join([f"\n\t>>> {k}: {v}" for k, v in query.items()]))
+            
+        #     print(id)
+            
+            # id_result = vdjdb_constr.find(vdjdb_search = queries[id], construct_only = False)
+            
+        #     print(id_result)
+        
+            # if output:
+            #     outpath = os.path.join("vdjdb_queries", f"{id}.tsv")
+            #     os.makedirs(os.path.dirname(outpath), exist_ok = True)
 
-
-if __name__ == "__main__":
-
-    pd.set_option("display.max_columns", None)
-
-    logging.basicConfig(
-        level = logging.INFO,
-        format = "%(asctime)s -- %(message)s\n",
-        datefmt = "%d-%b-%y %H:%M:%S"
-    )
+            #     # for this usage example out will contain a single index
+            #     id_result.to_csv(
+            #         outpath,
+            #         sep = "\t",
+            #     )

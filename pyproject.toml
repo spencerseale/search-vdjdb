@@ -1,19 +1,30 @@
 [tool.poetry]
 name = "search-vdjdb"
-version = "1.0.0"
+version = "1.1.0"
 description = "Query VDJdb based on a custom set of input params."
 authors = ["Spencer Seale <spencerseale17@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    {include = "search_vdjdb", from = "src/python"},
+]
 
 [tool.poetry.dependencies]
-python = "^3.7"
-bs4 = "^0.0.1"
-pandas = "1.1.5"
-numexpr = "2.7.1"
-requests = "2.22.0"
+python = "^3.10"
+bs4 = "^0.0.2"
+pandas = "^2.2.0"
 toml = "^0.10.2"
-importlib-resources = "^5.7.1"
+importlib-resources = "^6.1.1"
+requests = "^2.31.0"
+attrs = "^23.2.0"
+pydantic = "^2.6.2"
 
-[tool.poetry.dev-dependencies]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.1"
+black = "^24.2.0"
+pre-commit = "^3.6.2"
+ruff = "^0.2.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
