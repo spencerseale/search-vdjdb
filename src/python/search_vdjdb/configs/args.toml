@@ -20,4 +20,3 @@
     show_default = true
     metavar = "Output"
     help = "Output the results to a file."
-

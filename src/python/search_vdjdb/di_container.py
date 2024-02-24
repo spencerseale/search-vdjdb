@@ -2,23 +2,24 @@
 
 import sys
 from logging import Logger, getLogger, StreamHandler, Formatter
+from typing import Union
 
-from attrs import define 
+from attrs import define
 
-
-from search_vdjdb._config import ArgsConfig, ValidatedInput
+from search_vdjdb._config import ArgsConfig, ValidatedInput, SimpleInput
 from search_vdjdb._runner import SearchVdjdbRunner
 
 
 @define
 class DiContainer:
     """Dependency injector."""
-    
+
     namespace: str = "prod"
-    
+    """Namespace for the container."""
+
     def logger(self) -> Logger:
         """Init logger"""
-        
+
         logger = getLogger(__name__)
         logger.propagate = False  # don't propagate to root logger
         logger.addHandler(StreamHandler(sys.stdout))
@@ -32,15 +33,22 @@ class DiContainer:
         logger.handlers[0].setFormatter(lformat)
 
         return logger
-    
+
     def config(self) -> ArgsConfig:
-        
+        """Init config."""
+
         return ArgsConfig()
-    
-    def runner(self, input: ValidatedInput, logger: Logger) -> SearchVdjdbRunner:
-        
+
+    def runner(
+        self,
+        input: Union[ValidatedInput, SimpleInput],
+        logger: Logger,
+        parse: bool = True,
+    ) -> SearchVdjdbRunner:
+        """Init runner."""
+
         return SearchVdjdbRunner(
             params=input,
             logger=logger,
-            parse=True,
+            parse=parse,
         )

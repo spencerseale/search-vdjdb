@@ -1,7 +1,7 @@
 # search-vdjdb
 
 
-### Background 
+### Background
 
 This simple python tool serves to obtain up-to-date public T-cell receptor (TCR) data from VDJdb - a popular database containing TCR specificity data.
 
@@ -9,9 +9,9 @@ VDJdb - https://vdjdb.cdr3.net/
 
 Data is aggregated from peer-reviewed publications and absorbed in non-routine intervals by administrators. Due to these sporadic updates, ensuring an up-to-date version of VDJdb is queried as part of this workflow is critical to ensuring a complete database is available to users. For example during the COVID-19 pandemic, TCR specificity data for viral epitopes was added giving vaccine developers information on COVID-19 epitopes to target. Querying a dated database would miss these valuable additions.
 
-The heterodimer T-cell receptors (beta and alpha subunits) encode specificity for any possible antigen that they may encounter. This specificity is encoded via a process known as "VDJ recombination" (in alpha the D gene is absent and thus VJ recombination) where 3 gene segments, V, D, and J, randomly shuffle. This randomness results in a variety of receptors capable of arming the adaptive immune system against any type of pathogen. At the center of this binding domain exists an additional region, the Complimentary Determining Region 3 (CDR3), which makes direct contact with an antigen. Together, these motifs define the variable region of a receptor and are commonly used as a proxy for the make-up of an entire receptor, and thus T-cell. 
+The heterodimer T-cell receptors (beta and alpha subunits) encode specificity for any possible antigen that they may encounter. This specificity is encoded via a process known as "VDJ recombination" (in alpha the D gene is absent and thus VJ recombination) where 3 gene segments, V, D, and J, randomly shuffle. This randomness results in a variety of receptors capable of arming the adaptive immune system against any type of pathogen. At the center of this binding domain exists an additional region, the Complimentary Determining Region 3 (CDR3), which makes direct contact with an antigen. Together, these motifs define the variable region of a receptor and are commonly used as a proxy for the make-up of an entire receptor, and thus T-cell.
 
-Querying this database provides valuable insight into annotation information reported in the literature. 
+Querying this database provides valuable insight into annotation information reported in the literature.
 
 ### Installation
 
@@ -25,9 +25,9 @@ This package relies on poetry for seamless dependency management.
 
 ### Basic Usage
 
-* Run some example cases through the tool to demonstrate it's usage: `poetry run python -m search_vdjdb.entry -q src/python/search_vdjdb/configs/query_examples.toml`. 
+* Run some example cases through the tool to demonstrate it's usage: `poetry run python -m search_vdjdb.entry -q src/python/search_vdjdb/configs/query_examples.toml`.
 
-* The example queries are contained in `search_vdjdb.configs.query_examples.toml`, you can edit this file to include additional values to filter for as key, value pairs. 
+* The example queries are contained in `search_vdjdb.configs.query_examples.toml`, you can edit this file to include additional values to filter for as key, value pairs.
 
 * Save queries as individual files by passing `--output` along with execution.
 
