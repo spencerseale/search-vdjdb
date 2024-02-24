@@ -25,7 +25,7 @@ This package relies on poetry for seamless dependency management.
 
 ### Basic Usage
 
-* Run some example cases through the tool to demonstrate it's usage: `poetry run python3 search_vdjdb/runner.py --examples`. 
+* Run some example cases through the tool to demonstrate it's usage: `poetry run python -m search_vdjdb.entry -q src/python/search_vdjdb/configs/query_examples.toml`. 
 
 * The example queries are contained in `search_vdjdb.configs.query_examples.toml`, you can edit this file to include additional values to filter for as key, value pairs. 
 
@@ -35,4 +35,4 @@ This package relies on poetry for seamless dependency management.
 
 ### Additional Considerations
 
-* Calling `query_db.PublicTcrDb.get_vdjdb()` defaults to caching a local gzipped VDJdb. Subsequent method calls and queries will overwrite this file. However, calling into `query_db.PublicTcrDb.find()` will first look for a cached VDJdb prior to scraping a new copy. If you wish to update your local VDJdb in between query commands, either remove the local file from your system or execute `query_db.PublicTcrDb.get_vdjdb()` again to refresh your copy.
+* Calling `PublicTcrDb.get_vdjdb()` defaults to caching a local gzipped VDJdb. Subsequent method calls and queries will overwrite this file. However, calling into `PublicTcrDb.find()` will first look for a cached VDJdb prior to scraping a new copy. If you wish to update your local VDJdb in between query commands, either remove the local file from your system or execute `PublicTcrDb.get_vdjdb()` again to refresh your copy.
