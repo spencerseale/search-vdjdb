@@ -17,21 +17,20 @@ Querying this database provides valuable insight into annotation information rep
 
 This package relies on poetry for seamless dependency management.
 
-* https://python-poetry.org/docs/#:~:text=a%20supported%20one.-,Installation,-Poetry%20provides%20a
-
 * Ensure your python3 runtime matches that specified in `pyproject.toml`. This can be done with conda or pyenv and ensure that runtime is activated.
-
 * From the project root, install: `poetry install`
 
 ### Basic Usage
 
 * Run some example cases through the tool to demonstrate it's usage: `poetry run python -m search_vdjdb.entry -q src/python/search_vdjdb/configs/query_examples.toml`.
-
 * The example queries are contained in `search_vdjdb.configs.query_examples.toml`, you can edit this file to include additional values to filter for as key, value pairs.
-
 * Save queries as individual files by passing `--output` along with execution.
-
 * For more control, import search_vdjdb.query_db into your workflow and instantiate a `query_db.PublicTcrDb` object to programatically gain access to the latest VDJdb release.
+
+### Storage Backend
+
+* Included are integrations for TileDB, TileDB Cloud (With AWS S3 backend)
+* The filtered database is taken from a public release and compressed into a TileDB asset for faster access and usability with TileDB API.
 
 ### Additional Considerations
 
