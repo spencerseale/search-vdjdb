@@ -4,21 +4,21 @@ Currently available:
     * VDJdb (https://vdjdb.cdr3.net)
 """
 
-from logging import Logger, getLogger
-import requests
-from urllib.request import urlopen
-from typing import Sequence, List, Mapping, Optional
-from io import BytesIO
 import os
-import toml
-
 from dataclasses import dataclass
-from attrs import define, field
-from pydantic.dataclasses import dataclass as pydantic_dataclass
-import pandas as pd
+from io import BytesIO
+from logging import Logger, getLogger
+from typing import List, Mapping, Optional, Sequence
+from urllib.request import urlopen
 from zipfile import ZipFile
+
+import pandas as pd
+import requests
 import tiledb
 import tiledb.cloud
+import toml
+from attrs import define, field
+from pydantic.dataclasses import dataclass as pydantic_dataclass
 
 
 @dataclass(frozen=False)
@@ -261,8 +261,7 @@ class PublicTcrDb:
 
             # dynamically string together filtering operations
             v_row_filt = [
-                f"`{k}`.str.contains('{v}', regex = False)"
-                for k, v in vdjdb_search.items()
+                f"`{k}`.str.contains('{v}', regex = False)" for k, v in vdjdb_search.items()
             ]
 
             v_result = self.vdjdb.query(" & ".join(v_row_filt), engine="python")
@@ -336,9 +335,7 @@ class PublicTcrDb:
 
         else:
             tcrdb.logger.info("No query file specified, returning entire VDJdb.")
-            qresult = QueryResult(
-                id="full_vdjdb", result=tcrdb.vdjdb, query={}, db="vdjdb"
-            )
+            qresult = QueryResult(id="full_vdjdb", result=tcrdb.vdjdb, query={}, db="vdjdb")
 
             if output:
                 qresult.output(path=os.path.join(".vdjdb_queries", "vdjdb_full.tsv"))

@@ -1,13 +1,12 @@
 """Configuration module for the search_vdjdb package."""
 
-from typing import Iterator, Mapping, Any, Optional
+from dataclasses import fields
+from typing import Any, Iterator, Mapping, Optional
 
 import toml
-from importlib_resources import files
-from dataclasses import fields
-
-from pydantic.dataclasses import dataclass as pydantic_dataclass
 from attrs import define, field
+from importlib_resources import files
+from pydantic.dataclasses import dataclass as pydantic_dataclass
 
 
 @pydantic_dataclass(frozen=True)
@@ -41,7 +40,5 @@ class ArgsConfig:
 
     def load(self) -> ValidatedInput:
         cdir, cpath = self.configpath.rsplit("/", 1)
-        self._raw = toml.loads(
-            files(cdir.replace("/", ".")).joinpath(cpath).read_text()
-        )
+        self._raw = toml.loads(files(cdir.replace("/", ".")).joinpath(cpath).read_text())
         return ValidatedInput(**self._raw)

@@ -2,11 +2,11 @@
 
 from logging import Logger
 
-from click import Command, Option
 from attrs import define, field
+from click import Command, Option
 
-from search_vdjdb._query import PublicTcrDb, QueryResult
 from search_vdjdb._config import ValidatedInput
+from search_vdjdb._query import PublicTcrDb, QueryResult
 
 
 @define
@@ -34,9 +34,7 @@ class SearchVdjdbRunner:
 
         click_params = [Option(**opt) for opt in self.params]
 
-        self._command = Command(
-            name="search-vdjdb", params=click_params, callback=self.run
-        )
+        self._command = Command(name="search-vdjdb", params=click_params, callback=self.run)
 
     def __call__(self) -> None:
         """Call the command."""

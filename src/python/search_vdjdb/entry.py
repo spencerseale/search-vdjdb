@@ -1,6 +1,7 @@
 """Public interface for search_vdjdb package."""
 
 from logging import Logger
+
 from attrs import define, field
 
 from search_vdjdb.di_container import DiContainer

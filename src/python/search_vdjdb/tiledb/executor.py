@@ -1,9 +1,8 @@
 """Example of how to execute compute in TileDB Cloud or locally."""
 
 from search_vdjdb.di_container import DiContainer
-from search_vdjdb.tiledb.registrations import extract_vdjdb
 from search_vdjdb.tiledb.client import UdfClient, UdfInput
-
+from search_vdjdb.tiledb.registrations import extract_vdjdb
 
 if __name__ == "__main__":
     di = DiContainer()

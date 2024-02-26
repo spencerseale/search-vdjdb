@@ -1,7 +1,7 @@
 """TileDB Cloud client."""
 
 import os
-from typing import Callable, Any
+from typing import Any, Callable
 
 import tiledb
 import tiledb.cloud

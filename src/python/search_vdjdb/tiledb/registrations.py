@@ -1,10 +1,10 @@
 """Register assets to TileDB Cloud."""
 
-from typing import Optional, List
+from typing import List, Optional
 
-from search_vdjdb.di_container import DiContainer
 from search_vdjdb._config import SimpleInput
 from search_vdjdb._query import QueryResult
+from search_vdjdb.di_container import DiContainer
 from search_vdjdb.tiledb.client import ObjectRegistration, UdfClient
 
 

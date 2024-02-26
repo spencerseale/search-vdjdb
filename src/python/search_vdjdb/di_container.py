@@ -1,12 +1,12 @@
 """Dependency injection container for the search_vdjdb package."""
 
 import sys
-from logging import Logger, getLogger, StreamHandler, Formatter
+from logging import Formatter, Logger, StreamHandler, getLogger
 from typing import Union
 
 from attrs import define
 
-from search_vdjdb._config import ArgsConfig, ValidatedInput, SimpleInput
+from search_vdjdb._config import ArgsConfig, SimpleInput, ValidatedInput
 from search_vdjdb._runner import SearchVdjdbRunner
 
 
